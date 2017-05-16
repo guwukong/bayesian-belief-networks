@@ -39,7 +39,7 @@ class Vector(object):
         counts = defaultdict(int)
         for x in l:
             counts[x] += 1
-        deco = [(k, v) for k, v in counts.items()]
+        deco = [(k, v) for k, v in list(counts.items())]
         deco.sort(reverse=True, key=lambda x: x[1])
         return deco[0][0]
 

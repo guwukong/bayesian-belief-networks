@@ -76,7 +76,7 @@ def %(function)s(%(var)s):
                           'var': variable,
                           'dict': str(dict(
                               zip(variables[variable],
-                                  map(float, match.group(1).split(", ")))))
+                                  list(map(float, match.group(1).split(", "))))))
                       }
                 )
                 infile.readline()  # }

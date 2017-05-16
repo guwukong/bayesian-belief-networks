@@ -44,7 +44,7 @@ def domains_to_metadata(domains):
     vals: A string representing the sqlite data type
     (i.e 'integer' for bool and 'varchar' for str)'''
     metadata = dict()
-    for k, v in domains.items():
+    for k, v in list(domains.items()):
         # Assume that all values in the domain
         # are of the same type. TODO: verify this!
         try:
@@ -73,7 +73,7 @@ def initialize_sample_db(conn, metadata):
     to be categorical and are mapped
     to varchar'''
     type_specs = []
-    for column, sqlite_type in metadata.items():
+    for column, sqlite_type in list(metadata.items()):
         type_specs.append((column, sqlite_type))
     SQL = '''
         CREATE TABLE samples (%s);
@@ -134,7 +134,7 @@ class SampleDB(object):
         '''
         evidence_cols = []
         evidence_vals = []
-        for k, v in kwds.items():
+        for k, v in list(kwds.items()):
             evidence_cols.append('%s=?' % k)
             if isinstance(v, bool):
                 # Cast booleans to integers

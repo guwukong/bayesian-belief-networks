@@ -17,6 +17,7 @@ from prettytable import PrettyTable
 from bayesian.persistance import SampleDB, ensure_data_dir_exists
 from bayesian.exceptions import *
 from bayesian.utils import get_args
+from functools import reduce
 
 DEBUG = False
 GREEN = '\033[92m'
@@ -53,7 +54,7 @@ class Node(object):
         print( '------------------------------')
         print( 'Messages at Node %s' % self.name)
         print( '------------------------------')
-        for k, v in self.received_messages.iteritems():
+        for k, v in self.received_messages.items():
             print( '%s <-- Argspec:%s' % (v.source.name, v.argspec))
             v.list_factors()
         print( '--')
@@ -71,11 +72,11 @@ class Node(object):
         needed_to_send = defaultdict(int)
         for target in neighbours:
             needed_to_send[target] = len(neighbours) - 1
-        for _, message in self.received_messages.items():
+        for _, message in list(self.received_messages.items()):
             for target in neighbours:
                 if message.source != target:
                     needed_to_send[target] -= 1
-        for k, v in needed_to_send.items():
+        for k, v in list(needed_to_send.items()):
             if v == 0 and not self.name in k.received_messages:
                 return k
 
@@ -113,7 +114,7 @@ class VariableNode(Node):
         normalize.
         '''
         product = 1
-        for _, message in self.received_messages.iteritems():
+        for _, message in list(self.received_messages.items()):
             product *= message(val)
         return product / normalizer
 
@@ -570,7 +571,7 @@ def dict_to_tuples(d):
     each of the values
     '''
     retval = []
-    for k, vals in d.iteritems():
+    for k, vals in d.items():
         retval.append([(k, v) for v in vals])
     return retval
 
@@ -642,7 +643,7 @@ def discover_sample_ordering(graph):
                 ordering.append(var_node)
                 accounted_for.add(var_node.name)
                 pmf_ordering.append(node.func)
-    return zip(ordering, pmf_ordering)
+    return list(zip(ordering, pmf_ordering))
 
 
 def get_sample(ordering, evidence={}):
@@ -982,7 +983,7 @@ class FactorGraph(object):
 
     def query_by_propagation(self, **kwds):
         self.reset()
-        for k, v in kwds.items():
+        for k, v in list(kwds.items()):
             for node in self.variable_nodes():
                 if node.name == k:
                     add_evidence(node, v)
@@ -1010,7 +1011,7 @@ class FactorGraph(object):
         tab.align = 'l'
         tab.align['Marginal'] = 'r'
         tab.float_format = '%8.6f'
-        for (node, value), prob in result.items():
+        for (node, value), prob in list(result.items()):
             if kwds.get(node, '') == value:
                 tab.add_row(['%s*' % node,
                              '%s%s*%s' % (GREEN, value, NORMAL),
@@ -1050,7 +1051,7 @@ class FactorGraph(object):
                 counts[key] += 1
         # Now normalize
         normalized = dict(
-            [(k, v / valid_samples) for k, v in counts.items()])
+            [(k, v / valid_samples) for k, v in list(counts.items())])
         return normalized
 
     def generate_samples(self, n):
@@ -1097,11 +1098,11 @@ class FactorGraph(object):
                 'decrease the number of samples '
                 'required for querying (graph.n_samples). ')
         for sample in samples:
-            for name, val in sample.items():
+            for name, val in list(sample.items()):
                 key = (name, val)
                 counts[key] += 1
         normalized = dict(
-            [(k, v / len(samples)) for k, v in counts.items()])
+            [(k, v / len(samples)) for k, v in list(counts.items())])
         return normalized
 
 
@@ -1174,6 +1175,6 @@ def build_graph(*args, **kwds):
     for factor_node in factor_nodes:
         factor_args = get_args(factor_node.func)
         connect(factor_node, [variable_nodes[x] for x in factor_args])
-    graph = FactorGraph(variable_nodes.values() + factor_nodes, name=name)
+    graph = FactorGraph(list(variable_nodes.values()) + factor_nodes, name=name)
     #print domains
     return graph
