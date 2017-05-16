@@ -1,5 +1,5 @@
 '''Generic Graph Classes'''
-from StringIO import StringIO
+from io import StringIO
 
 class Node(object):
 

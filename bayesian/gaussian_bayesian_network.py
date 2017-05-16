@@ -5,7 +5,7 @@ from functools import wraps
 from numbers import Number
 from collections import Counter
 from itertools import product as xproduct
-from StringIO import StringIO
+from io import StringIO
 
 from bayesian.graph import Graph, Node, connect
 from bayesian.gaussian import make_gaussian_cdf

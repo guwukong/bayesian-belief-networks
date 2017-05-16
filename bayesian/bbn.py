@@ -5,7 +5,7 @@ import copy
 import heapq
 
 from random import random, choice
-from StringIO import StringIO
+from io import StringIO
 from itertools import combinations, product
 from collections import defaultdict
 
