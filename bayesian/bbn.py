@@ -116,7 +116,7 @@ class BBN(Graph):
                              '%8.6f' % prob])
             else:
                 tab.add_row([node, value, '%8.6f' % prob])
-        print tab
+        print(tab)
 
     def draw_samples(self, query={}, n=1):
         '''query is a dict of currently evidenced

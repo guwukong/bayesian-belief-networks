@@ -103,4 +103,4 @@ class Vector(object):
                      self.median_absolute_deviation])
         tab.add_row(['Mode Absolute Deviation',
                      self.mode_absolute_deviation])
-        print tab
+        print(tab)

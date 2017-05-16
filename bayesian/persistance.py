@@ -51,7 +51,7 @@ def domains_to_metadata(domains):
         try:
             metadata[k.name] = P2S_MAPPING[type(v[0])]
         except KeyError:
-            print k, v
+            print(k, v)
             raise UnsupportedTypeException
     return metadata
 
@@ -80,7 +80,7 @@ def initialize_sample_db(conn, metadata):
         CREATE TABLE samples (%s);
     ''' % ','.join(['%s %s' % (col, type_) for col, type_ in type_specs])
     cur = conn.cursor()
-    print SQL
+    print(SQL)
     cur.execute(SQL)
 
 
@@ -177,10 +177,10 @@ class SampleDB(object):
             self.commit()
 
     def commit(self):
-        print 'Committing....'
+        print('Committing....')
         try:
             self.conn.commit()
             self.insert_count = 1
         except:
-            print 'Commit to db file failed...'
+            print('Commit to db file failed...')
             raise

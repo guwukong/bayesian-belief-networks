@@ -190,11 +190,11 @@ class GaussianBayesianGraph(Graph):
         mu = result['joint']['mu']
         sigma = result['joint']['sigma']
         evidence = result['evidence']
-        print 'Evidence: %s' % str(evidence)
-        print 'Covariance Matrix:'
-        print sigma
-        print 'Means:'
-        print mu
+        print('Evidence: %s' % str(evidence))
+        print('Covariance Matrix:')
+        print(sigma)
+        print('Means:')
+        print(mu)
 
 
     def discover_sample_ordering(self):
